@@ -256,16 +256,22 @@ export const getLinkStats = query({
 
 export const searchLinks = query({
   args: {
-    query: v.string(),
+    query: v.optional(v.string()),
     limit: v.optional(v.number()),
   },
   handler: async (ctx, { query, limit }) => {
     if(!limit) limit = 10 
     const userId = await getUserId(ctx)
+    if(query) { 
+      return await ctx.db
+        .query("links")
+        .withSearchIndex("search_key", (q) => 
+          q.search("search_key", query).eq("user_id", userId))
+        .take(limit);
+    }
     return await ctx.db
       .query("links")
-      .withSearchIndex("search_key", (q) => 
-        q.search("search_key", query).eq("user_id", userId))
+      .filter((q) => q.eq(q.field("user_id"), userId))
       .take(limit);
   },
 })
