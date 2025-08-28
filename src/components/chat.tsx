@@ -98,6 +98,7 @@ export function Chat({
           const createdLink = await insertLinkMutation({
             destination: input.url,
             description: input.description || 'A short link',
+            qr_code: qrCode,
           });
           console.log(createdLink);
           return createdLink;
