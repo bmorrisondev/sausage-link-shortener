@@ -121,7 +121,7 @@ function DebugPage() {
       <div>
         <h2>Link Graph</h2>
         <Button onClick={seedLinkHits}>Seed Link Hits</Button>
-        <LinkGraph id="j57czkf8gnjzr13kfjn32rrf317pgp5c" />
+        <LinkGraph id={"j57czkf8gnjzr13kfjn32rrf317pgp5c" as Id<'links'>} />
       </div>
     </div>
   );
