@@ -167,7 +167,10 @@ export function Chat({
 
   return (
     <Card
-      className={cn('w-full max-w-2xl mx-auto h-fullflex flex-col', className)}
+      className={cn(
+        'w-full max-w-2xl mx-auto h-[600px] flex flex-col',
+        className
+      )}
     >
       <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center gap-2">
@@ -231,7 +234,7 @@ export function Chat({
                     <>
                       <div
                         className={cn(
-                          'rounded-lg px-3 py-2 text-sm background-oats ml-auto'
+                          'rounded-lg px-3 py-2 text-sm background-oats'
                         )}
                       >
                         <p className="whitespace-pre-wrap">{message.content}</p>
