@@ -16,5 +16,6 @@ export default defineSchema({
   }),
   link_hits: defineTable({
     link_id: v.id("links"),
+    timestamp: v.number(),
   })
 });

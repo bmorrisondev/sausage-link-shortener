@@ -40,6 +40,7 @@ export const hitLinkInternal = internalMutation({
   handler: async (ctx, args) => {
     await ctx.db.insert("link_hits", {
       link_id: args.linkId,
+      timestamp: Date.now(),
     });
   },
 });
@@ -196,10 +197,10 @@ export const getLinkStats = query({
     // TODO: I think I need to set query again but not 100% sure
     const query = ctx.db.query("link_hits").filter((q) => q.eq(q.field("link_id"), linkId))
     if(start) {
-      query.filter((q) => q.gte(q.field("_creationTime"), start))
+      query.filter((q) => q.gte(q.field("timestamp"), start))
     }
     if(end) {
-      query.filter((q) => q.lte(q.field("_creationTime"), end))
+      query.filter((q) => q.lte(q.field("timestamp"), end))
     }
     // TODO: Maybe add limit and offset
     // if(limit) {
