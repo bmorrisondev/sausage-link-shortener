@@ -7,6 +7,7 @@ export default defineSchema({
     description: v.optional(v.string()),
     slug: v.string(),
     user_id: v.string(),
+    qr_code: v.optional(v.string()),
     search_key: v.optional(v.string())
   })
   .searchIndex("search_key", {

@@ -137,9 +137,10 @@ export const updateLink = mutation({
   args: {
     linkId: v.id("links"),
     destination: v.optional(v.string()),
-    description: v.optional(v.string())
+    description: v.optional(v.string()),
+    qr_code: v.optional(v.string())
   },
-  handler: async (ctx, { linkId, destination, description }) => {
+  handler: async (ctx, { linkId, destination, description, qr_code }) => {
     const userId = await getUserId(ctx)
     const link = await ctx.db
       .query("links")
@@ -150,6 +151,7 @@ export const updateLink = mutation({
     await ctx.db.patch(linkId, {
       destination: destination || link.destination,
       description: description || link.description,
+      qr_code: qr_code || link.qr_code,
       search_key: `${link.slug} ${destination || link.destination} ${description || link.description}`
     })
   }
