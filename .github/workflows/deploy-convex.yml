@@ -31,6 +31,6 @@ jobs:
         run: pnpm install
 
       - name: Deploy to Convex Production
-        run: npx convex deploy --prod
+        run: npx convex deploy
         env:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
