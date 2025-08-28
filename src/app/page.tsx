@@ -1,17 +1,46 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Coffee, Sparkles, Link as LinkIcon, QrCode, ChartBar, Copy, Egg } from 'lucide-react';
+import { SignedIn, SignedOut, UserButton, SignIn } from '@clerk/nextjs'
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Navigation Bar */}
+      <header className="w-full py-4 bg-background-toast border-b border-background-latte sticky top-0 z-10 backdrop-blur-sm">
+        <div className="container px-4 md:px-6 mx-auto">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/sausage-logo.svg" alt="Sausage Link Shortener" width={40} height={40} />
+              <span className="font-bold text-xl">Sausage Link</span>
+            </Link>
+            <div className="flex items-center gap-4">
+              <SignedIn>
+                <div className="flex items-center gap-4">
+                  <Button asChild variant="outline" size="sm">
+                    <Link href="/chat">Get Cooking</Link>
+                  </Button>
+                  <UserButton />
+                </div>
+              </SignedIn> 
+              <SignedOut>
+                <Button asChild variant="outline" size="sm" className="hidden sm:flex">
+                  <Link href="/chat">Sign In</Link>
+                </Button>
+              </SignedOut>
+            </div>
+          </div>
+        </div>
+      </header>
+      
       {/* Hero Section */}
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background-oats">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-              <div className="flex flex-col justify-center space-y-4">
+          <div className="container px-4 md:px-6 mx-auto">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center max-w-6xl mx-auto">
+              <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                     Sausage Link Shortener
@@ -25,16 +54,7 @@ export default function Home() {
                   Free to use, easy to share, and absolutely delightful!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button asChild size="lg">
-                    <Link href="/chat">
-                      Get Started <Sparkles className="ml-2" />
-                    </Link>
-                  </Button>
-                  <Button variant="outline" asChild size="lg">
-                    <Link href="/debug">
-                      See Examples
-                    </Link>
-                  </Button>
+                  <SignIn />
                 </div>
               </div>
               <div className="flex items-center justify-center">
@@ -64,8 +84,8 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-background-toast">
-          <div className="container px-4 md:px-6">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-background-oats">
+          <div className="container px-4 md:px-6 mx-auto text-center">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
@@ -78,7 +98,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <Egg className="h-10 w-10 text-accent-yolk mb-2" />
                   <CardTitle>Emoji Slugs</CardTitle>
                   <CardDescription>
@@ -92,7 +112,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <Coffee className="h-10 w-10 text-accent-strawberry mb-2" />
                   <CardTitle>Chat Interface</CardTitle>
                   <CardDescription>
@@ -106,7 +126,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <Coffee className="h-10 w-10 text-background-latte mb-2" />
                   <CardTitle>100% Free</CardTitle>
                   <CardDescription>
@@ -120,7 +140,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <QrCode className="h-10 w-10 text-foreground-dark mb-2" />
                   <CardTitle>QR Codes</CardTitle>
                   <CardDescription>
@@ -134,7 +154,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <LinkIcon className="h-10 w-10 text-accent-avocado mb-2" />
                   <CardTitle>Link Management</CardTitle>
                   <CardDescription>
@@ -148,7 +168,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               <Card className="bg-background-oats">
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center">
                   <ChartBar className="h-10 w-10 text-accent-yolk mb-2" />
                   <CardTitle>Click Analytics</CardTitle>
                   <CardDescription>
@@ -167,7 +187,7 @@ export default function Home() {
 
         {/* Sign Up Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background-oats">
-          <div className="container px-4 md:px-6">
+          <div className="container px-4 md:px-6 mx-auto">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
@@ -178,11 +198,16 @@ export default function Home() {
                 </p>
               </div>
               <div className="mx-auto max-w-sm space-y-4">
-                <Button asChild size="lg" className="w-full">
-                  <Link href="/chat">
-                    Create Your First Link <Sparkles className="ml-2" />
-                  </Link>
-                </Button>
+                <SignedIn>
+                  <Button asChild size="lg" className="w-full">
+                    <Link href="/chat">
+                      Sizzle your shortlinks <Sparkles className="ml-2" />
+                    </Link>
+                  </Button>
+                </SignedIn>
+                <SignedOut>
+                  <SignIn />
+                </SignedOut>
                 <p className="text-xs text-foreground-light">
                   No credit card required. Free forever.
                 </p>
@@ -194,7 +219,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="w-full py-6 bg-background-latte">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
               <p className="text-sm text-foreground-dark">
