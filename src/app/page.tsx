@@ -27,12 +27,22 @@ export default function Home() {
                   Free to use, easy to share, and absolutely delightful!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link 
-                    href="/sign-in" 
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    Sign In
-                  </Link>
+                  <SignedIn>
+                    <Link 
+                      href="/chat" 
+                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    >
+                      Get Cooking
+                    </Link>
+                  </SignedIn>
+                  <SignedOut>
+                    <Link 
+                      href="/sign-in" 
+                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    >
+                      Sign In
+                    </Link>
+                  </SignedOut>
                 </div>
               </div>
               <div className="flex items-center justify-center">
