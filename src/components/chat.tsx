@@ -111,9 +111,7 @@ export function Chat({
         description:
           'Display a short link including its url, description, and slug',
         props: {
-          url: s.string('The URL to display'),
-          description: s.string('The description of the link'),
-          slug: s.string('The slug of the link'),
+          id: s.string('The ID of the short link to display'),
         },
       }),
       exposeComponent(MarkdownWrapper, {
