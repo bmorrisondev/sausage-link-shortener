@@ -23,6 +23,7 @@ import { api } from '../../convex/_generated/api';
 import QRCode from 'qrcode';
 import LinkQueryList from './link-query-list';
 import ShortLinkQuery from './short-link';
+import BaconDivider from './bacon-divider';
 
 interface Message {
   id: string;
@@ -167,10 +168,6 @@ export function Chat({
       e.preventDefault();
       handleSendMessage();
     }
-  };
-
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   return (

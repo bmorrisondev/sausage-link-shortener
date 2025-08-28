@@ -9,6 +9,7 @@ import { DancingEmojis } from './dancing-emojis';
 import { EditLinkModal } from './edit-link-modal';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import BaconDivider from './bacon-divider';
 
 interface ShortLinkData {
   slug: string;
@@ -46,7 +47,7 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
 
         <div className="space-y-3">
           {link.qr_code && (
-            <div className="flex justify-center pt-3 border-t border-background-latte">
+            <div className="flex justify-center pt-3">
               <div className="flex flex-col items-center gap-2">
                 <Image
                   src={link.qr_code}
