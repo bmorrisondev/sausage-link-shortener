@@ -35,6 +35,16 @@ function LinkPage() {
     init();
   }, [slug]);
 
+    useEffect(() => {
+    if (link) {
+      const redirectTimer = setTimeout(() => {
+        window.location.href = link.destination
+      }, 3000)
+      
+      return () => clearTimeout(redirectTimer)
+    }
+  }, [link])
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className=" text-center">

@@ -3,6 +3,12 @@ import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+export const getAllLinkIds = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("links").collect()
+  }
+})
+
 export const getLinkById = query ({
   args: { id: v.string() },
   handler: async (ctx, { id }) => {

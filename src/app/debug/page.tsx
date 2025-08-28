@@ -20,6 +20,7 @@ function DebugPage() {
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>();
   const hitLinkMutation = useMutation(api.links.hitLink);
+  const allLinks = useQuery(api.links.getAllLinkIds);
 
   const handleInsertLink = () => {
     insertLinkMutation({ destination });
@@ -27,17 +28,20 @@ function DebugPage() {
   };
 
   async function seedLinkHits(){
+    if(!allLinks) return
     // Generate 1000 records over the last 7 days
     const now = Date.now();
     const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
-    
-    for(let i = 0; i < 1000; i++) {
-      // Generate a random timestamp between now and 7 days ago
-      const randomTimestamp = Math.floor(Math.random() * (now - sevenDaysAgo)) + sevenDaysAgo;
-      await hitLinkMutation({ 
-        linkId: "j57czkf8gnjzr13kfjn32rrf317pgp5c" as Id<"links">, 
-        timestamp: randomTimestamp 
+    for(let i = 0; i < allLinks.length; i++) {
+      console.log("working on", allLinks[i], "at index", i, 'out of', allLinks.length)
+      for(let j = 0; j < 1000; j++) {
+        // Generate a random timestamp between now and 7 days ago
+        const randomTimestamp = Math.floor(Math.random() * (now - sevenDaysAgo)) + sevenDaysAgo;
+        await hitLinkMutation({ 
+          linkId: allLinks[i]._id as Id<"links">, 
+          timestamp: randomTimestamp 
       });
+    }
     }
   }
 
