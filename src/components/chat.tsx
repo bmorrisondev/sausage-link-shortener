@@ -18,12 +18,15 @@ import { exposeComponent, useTool, useUiChat } from '@hashbrownai/react';
 import { useUser } from '@clerk/nextjs';
 import { s } from '@hashbrownai/core';
 import MarkdownWrapper from './markdown-wrapper';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import QRCode from 'qrcode';
 import LinkQueryList from './link-query-list';
 import ShortLinkQuery from './short-link';
 import BaconDivider from './bacon-divider';
+
+import LinkGraph from './link-graph';
+import LinksGraphSearch from './links-graph-search';
 
 interface Message {
   id: string;
@@ -79,7 +82,8 @@ export function Chat({
   const { messages, sendMessage, isReceiving, isSending } = useUiChat({
     debugName: 'Chat Component',
     model: 'gpt-4.1',
-    system: 'hashbrowns should be covered and smothered',
+    system:
+      'You are a helpful assistant that helps users create short links. When a user provides a URL, create a short link for it using the create_short_link tool. You can also show existing links, and statistics about links. Always respond in markdown format. Use bacon dividers to separate different sections of your response. If a user asks for statistics about a link, show a graph of link clicks over time.',
     messages: [
       { role: 'user', content: 'Write a short story about breakfast.' },
     ],
@@ -130,6 +134,14 @@ export function Chat({
       exposeComponent(LinkQueryList, {
         name: 'LinkQueryList',
         description: 'Show a list of links matching a query',
+        props: {
+          query: s.string('The search term to filter links by'),
+        },
+      }),
+      exposeComponent(LinksGraphSearch, {
+        name: 'LinksGraphSearch',
+        description:
+          'Search for links and display the analytics associated with each one',
         props: {
           query: s.string('The search term to filter links by'),
         },
@@ -242,7 +254,9 @@ export function Chat({
                           'ml-auto rounded-lg px-3 py-2 text-sm background-oats'
                         )}
                       >
-                        <p className="whitespace-pre-wrap">{message.content as string}</p>
+                        <p className="whitespace-pre-wrap">
+                          {message.content as string}
+                        </p>
                       </div>
                       <Avatar className="h-8 w-8 flex-shrink-0">
                         <AvatarImage
