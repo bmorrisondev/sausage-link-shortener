@@ -34,7 +34,9 @@ export function ShortLink({ id }: ShortLinkProps) {
       <CardContent className="p-4">
         <div className="flex flex-col space-y-3">
           <div className="flex items-center justify-between">
-            <Image src={link.qr_code} alt="QR Code" width={50} height={50} />
+            {link.qr_code && (
+              <Image src={link.qr_code} alt="QR Code" width={50} height={50} />
+            )}
             <Link
               href={shortUrl}
               className="text-lg font-medium text-primary hover:underline"
