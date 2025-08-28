@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Link from 'next/link';
 import Image from 'next/image';
 import { Coffee, Sparkles, Link as LinkIcon, QrCode, ChartBar, Copy, Egg } from 'lucide-react';
-import { SignedIn, SignedOut, UserButton, SignIn } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 export default function Home() {
   return (
@@ -27,7 +27,12 @@ export default function Home() {
                   Free to use, easy to share, and absolutely delightful!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <SignIn />
+                  <Link 
+                    href="/sign-in" 
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    Sign In
+                  </Link>
                 </div>
               </div>
               <div className="flex items-center justify-center">
