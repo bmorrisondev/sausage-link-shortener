@@ -6,6 +6,7 @@ import { api } from '../../../convex/_generated/api'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { EditLinkModal } from '@/components/edit-link-modal'
+import LinkQueryList from '@/components/link-query-list'
 
 function DebugPage() {
   const base = process.env.NEXT_PUBLIC_REDIRECT_BASE_URL
@@ -13,6 +14,8 @@ function DebugPage() {
   const userLinks = useQuery(api.links.get)
   const insertLinkMutation = useMutation(api.links.insert)
   const deleteLinkMutation = useMutation(api.links.deleteLink)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchQuery, setSearchQuery] = useState<string>()
 
   const handleInsertLink = () => {
     insertLinkMutation({ destination })
@@ -66,6 +69,14 @@ function DebugPage() {
             Insert
           </Button>
         </div>
+      </div>
+
+      <div>
+        <h2 className="text-xl font-semibold mb-4 border-b pb-2">Search Links</h2>
+        <input type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
+        <Button onClick={() => setSearchQuery(searchInput)}>Search</Button>
+        <Button onClick={() => setSearchInput('')}>Clear</Button>
+        {searchQuery && <LinkQueryList query={searchQuery} />}
       </div>
     </div>
   )
