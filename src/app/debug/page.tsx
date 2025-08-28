@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import { GenericId as Id } from 'convex/values';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { EditLinkModal } from '@/components/edit-link-modal';
@@ -18,11 +19,27 @@ function DebugPage() {
   const deleteLinkMutation = useMutation(api.links.deleteLink);
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState<string>();
+  const hitLinkMutation = useMutation(api.links.hitLink);
 
   const handleInsertLink = () => {
     insertLinkMutation({ destination });
     setDestination('');
   };
+
+  async function seedLinkHits(){
+    // Generate 1000 records over the last 7 days
+    const now = Date.now();
+    const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+    
+    for(let i = 0; i < 1000; i++) {
+      // Generate a random timestamp between now and 7 days ago
+      const randomTimestamp = Math.floor(Math.random() * (now - sevenDaysAgo)) + sevenDaysAgo;
+      await hitLinkMutation({ 
+        linkId: "j57czkf8gnjzr13kfjn32rrf317pgp5c" as Id<"links">, 
+        timestamp: randomTimestamp 
+      });
+    }
+  }
 
   return (
     <div className="container mx-auto py-8 max-w-3xl">
@@ -99,6 +116,7 @@ function DebugPage() {
 
       <div>
         <h2>Link Graph</h2>
+        <Button onClick={seedLinkHits}>Seed Link Hits</Button>
         <LinkGraph id="j57czkf8gnjzr13kfjn32rrf317pgp5c" />
       </div>
     </div>

@@ -35,6 +35,16 @@ export const getLinkAndHit = mutation({
   }
 })
 
+export const hitLink = mutation({
+  args: { linkId: v.id("links"), timestamp: v.number() },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("link_hits", {
+      link_id: args.linkId,
+      timestamp: args.timestamp,
+    });
+  },
+})
+
 export const hitLinkInternal = internalMutation({
   args: { linkId: v.id("links") },
   handler: async (ctx, args) => {
@@ -218,7 +228,7 @@ export const getLinkStats = query({
     const aggregated: Record<string, number> = {}
     
     records.forEach(record => {
-      const date = new Date(record._creationTime)
+      const date = new Date(record.timestamp)
       let key: string
       
       switch (aggregateBy) {
