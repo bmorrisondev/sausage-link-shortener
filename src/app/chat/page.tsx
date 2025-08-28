@@ -2,8 +2,14 @@
 import React from 'react';
 import Chat from '@/components/chat';
 import { HashbrownProvider } from '@hashbrownai/react';
+import { useAuth } from '@clerk/nextjs'
 
 function ChatPage() {
+  const { isLoaded } = useAuth()
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
+
   return (
     <HashbrownProvider url={'/api/chat'}>
       <div className="container mx-auto py-8 px-4">

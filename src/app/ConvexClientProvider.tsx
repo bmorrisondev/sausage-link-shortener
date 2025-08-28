@@ -10,10 +10,5 @@ import { useAuth } from '@clerk/nextjs'
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
-  const { isLoaded } = useAuth()
-  if (!isLoaded) {
-    return <div>Loading...</div>
-  } else {
-    return <ConvexProviderWithClerk client={convex} useAuth={useAuth}>{children}</ConvexProviderWithClerk>;
-  }
+  return <ConvexProviderWithClerk client={convex} useAuth={useAuth}>{children}</ConvexProviderWithClerk>;
 } 
