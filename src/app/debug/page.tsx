@@ -5,17 +5,20 @@ import { useQuery, useMutation } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { EditLinkModal } from '@/components/edit-link-modal'
 
 function DebugPage() {
   const base = process.env.NEXT_PUBLIC_REDIRECT_BASE_URL
   const [destination, setDestination] = useState('')
   const userLinks = useQuery(api.links.get)
   const insertLinkMutation = useMutation(api.links.insert)
+  const deleteLinkMutation = useMutation(api.links.deleteLink)
 
   const handleInsertLink = () => {
     insertLinkMutation({ destination })
     setDestination('')
   }
+
 
   return (
     <div className="container mx-auto py-8 max-w-3xl">
@@ -35,6 +38,10 @@ function DebugPage() {
                 >
                   {link.slug}
                 </Link>
+                <button onClick={() => deleteLinkMutation({linkId: link._id})}>
+                  delete
+                </button>
+                <EditLinkModal link={link} />
               </li>
             ))}
           </ul>

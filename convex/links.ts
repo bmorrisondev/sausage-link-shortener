@@ -1,6 +1,8 @@
 import { AnyDataModel, GenericMutationCtx, GenericQueryCtx } from "convex/server";
-import { query, mutation } from "./_generated/server";
+import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
+
 
 export const getLink = query({
   args: { slug: v.string() },
@@ -8,6 +10,28 @@ export const getLink = query({
     return await ctx.db.query("links").filter((q) => q.eq(q.field("slug"), slug)).first()
   }
 })
+
+export const getLinkAndHit = mutation({
+  args: { slug: v.string() },
+  handler: async (ctx, { slug }) => {
+
+    const link = await ctx.db.query("links").filter((q) => q.eq(q.field("slug"), slug)).first()
+    if (!link) {
+      throw new Error("Link not found");
+    }
+    await ctx.runMutation(internal.links.hitLinkInternal, { linkId: link._id })
+    return link
+  }
+})
+
+export const hitLinkInternal = internalMutation({
+  args: { linkId: v.id("links") },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("link_hits", {
+      link_id: args.linkId,
+    });
+  },
+});
 
 async function getUserId(ctx: GenericQueryCtx<AnyDataModel>) {
   const identity = await ctx.auth.getUserIdentity();
@@ -61,10 +85,14 @@ export const insert = mutation({
 
     if(exists) {
       for(let i = 0; i < 3; i++) {
-        if(exists) break
+        if(!exists) break
         slug = getRandomBreakfastEmojis(12)
         exists = await checkDoesSlugExist(ctx, slug)
       }
+    }
+
+    if(exists) {
+      throw new Error("Slug already exists")
     }
 
     return await ctx.db.insert("links", {
@@ -80,3 +108,120 @@ async function checkDoesSlugExist(ctx: GenericMutationCtx<AnyDataModel>, slug: s
     .filter((q) => q.eq(q.field("slug"), slug))
     .first() ? true : false
 }
+
+export const deleteLink = mutation({
+  args: {
+    linkId: v.id("links")
+  },
+  handler: async (ctx, { linkId }) => {
+    await ctx.db.delete(linkId)
+  }
+})
+
+export const updateLink = mutation({
+  args: {
+    linkId: v.id("links"),
+    destination: v.optional(v.string()),
+    description: v.optional(v.string())
+  },
+  handler: async (ctx, { linkId, destination, description }) => {
+    await ctx.db.patch(linkId, {
+      destination,
+      description
+    })
+  }
+})
+
+export const getLinkStats = query({
+  args: {
+    linkId: v.id("links"),
+    start: v.optional(v.number()),
+    end: v.optional(v.number()),
+    aggregateBy: v.union(
+      v.literal("hour"), 
+      v.literal("day"), 
+      v.literal("week"), 
+      v.literal("month"), 
+      v.literal("year")
+    ),
+    // limit: v.optional(v.number()),
+    // offset: v.optional(v.number()),
+    // sort: v.optional(v.string()),
+    // sortDirection: v.optional(v.string()),
+  },
+  handler: async (ctx, { linkId, start, end, aggregateBy }) => {
+    const userId = await getUserId(ctx)
+
+    const link = await ctx.db.query('links').filter(q => q.and(q.eq(q.field("_id"), linkId), q.eq(q.field("user_id"), userId))).first()
+    if(!link) {
+      throw new Error("Link not found")
+    }
+
+    const query = ctx.db.query("link_hits").filter((q) => q.eq(q.field("link_id"), linkId)).filter((q) => q.eq(q.field("user_id"), userId))
+    if(start) {
+      query.filter((q) => q.gte(q.field("created_at"), start))
+    }
+    if(end) {
+      query.filter((q) => q.lte(q.field("created_at"), end))
+    }
+    // TODO: Maybe add limit and offset
+    // if(limit) {
+    //   query.limit(limit)
+    // }
+    // if(offset) {
+    //   query.offset(offset)
+    // }
+    // if(sort) {
+    //   query.sort((q) => q.field(sort), sortDirection === "desc" ? "desc" : "asc")
+    // }
+    const records = await query.collect()
+    
+    // Group and sum by the specified aggregate
+    const aggregated: Record<string, number> = {}
+    
+    records.forEach(record => {
+      const date = new Date(record._creationTime)
+      let key: string
+      
+      switch (aggregateBy) {
+        case "hour":
+          key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getHours()}`
+          break
+        case "day":
+          key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+          break
+        case "week":
+          // Get the first day of the week (Sunday)
+          const firstDay = new Date(date)
+          const day = date.getDay()
+          firstDay.setDate(date.getDate() - day)
+          key = `${firstDay.getFullYear()}-${firstDay.getMonth() + 1}-${firstDay.getDate()}`
+          break
+        case "month":
+          key = `${date.getFullYear()}-${date.getMonth() + 1}`
+          break
+        case "year":
+          key = `${date.getFullYear()}`
+          break
+        default:
+          key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+      }
+      
+      if (!aggregated[key]) {
+        aggregated[key] = 0
+      }
+      aggregated[key] += 1
+    })
+    
+    // Convert to array format for easier consumption by the client
+    const result = Object.entries(aggregated).map(([key, count]) => ({
+      key,
+      count
+    }))
+    
+    return {
+      total: records.length,
+      aggregated: result
+    }
+  }
+})
