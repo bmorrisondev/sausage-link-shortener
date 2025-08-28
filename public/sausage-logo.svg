@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sausage body -->
+  <path d="M5 20C5 15.5817 8.58172 12 13 12H27C31.4183 12 35 15.5817 35 20V20C35 24.4183 31.4183 28 27 28H13C8.58172 28 5 24.4183 5 20V20Z" fill="#E57373"/>
+  <!-- Sausage texture lines -->
+  <path d="M10 16C10.5 18 11 22 10 24" stroke="#C62828" stroke-width="1" stroke-linecap="round"/>
+  <path d="M15 15C15.5 17 16 23 15 25" stroke="#C62828" stroke-width="1" stroke-linecap="round"/>
+  <path d="M20 14C20.5 16 21 24 20 26" stroke="#C62828" stroke-width="1" stroke-linecap="round"/>
+  <path d="M25 15C25.5 17 26 23 25 25" stroke="#C62828" stroke-width="1" stroke-linecap="round"/>
+  <path d="M30 16C30.5 18 31 22 30 24" stroke="#C62828" stroke-width="1" stroke-linecap="round"/>
+  <!-- Grill marks -->
+  <path d="M8 18L32 18" stroke="#7B1FA2" stroke-width="1" stroke-linecap="round"/>
+  <path d="M8 22L32 22" stroke="#7B1FA2" stroke-width="1" stroke-linecap="round"/>
+  <!-- Link chain connecting to sausage -->
+  <circle cx="4" cy="20" r="2" stroke="#9E9E9E" stroke-width="1.5" fill="none"/>
+  <circle cx="36" cy="20" r="2" stroke="#9E9E9E" stroke-width="1.5" fill="none"/>
+  <path d="M2 20H0" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M40 20H38" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
