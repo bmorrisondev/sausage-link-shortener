@@ -109,7 +109,7 @@ export const insert = mutation({
       throw new Error("Slug already exists")
     }
 
-    return await ctx.db.insert("links", {
+    const id = await ctx.db.insert("links", {
       user_id: userId,
       destination,
       description,
@@ -117,6 +117,15 @@ export const insert = mutation({
       qr_code,
       search_key: `${slug} ${destination} ${description}`
     })
+
+    return {
+      id,
+      slug,
+      destination,
+      description,
+      qr_code,
+      search_key: `${slug} ${destination} ${description}`
+    }
   },
 })
 

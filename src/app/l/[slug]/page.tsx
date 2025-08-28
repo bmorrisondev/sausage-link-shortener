@@ -4,6 +4,7 @@ import { useQuery, useMutation } from 'convex/react'
 import { api } from '../../../../convex/_generated/api'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { DancingEmojis } from '../../../components/dancing-emojis'
 
 function LinkPage() {
   const params = useParams()
@@ -44,7 +45,7 @@ function LinkPage() {
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold mb-2">Emoji Link</h1>
-        <div className="text-6xl mb-4">{slug}</div>
+        <DancingEmojis emojis={slug} isLoading={!link} />
       </div>
       <p className="text-lg mb-4">This link redirects to:</p>
       <a 
