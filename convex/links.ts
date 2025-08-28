@@ -84,8 +84,9 @@ export const insert = mutation({
   args: {
     destination: v.string(),
     description: v.optional(v.string()),
+    qr_code: v.optional(v.string())
   },
-  handler: async (ctx, { destination, description }) => {
+  handler: async (ctx, { destination, description, qr_code }) => {
     try {
       new URL(destination);
     } catch {
@@ -113,6 +114,7 @@ export const insert = mutation({
       destination,
       description,
       slug,
+      qr_code,
       search_key: `${slug} ${destination} ${description}`
     })
   },
