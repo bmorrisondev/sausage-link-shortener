@@ -13,18 +13,7 @@ interface Props {
 
 function LinkQueryList({ query }: Props) {
   const links = useQuery(api.links.searchLinks, { query });
-  console.log('🚀 ~ LinkQueryList ~ query:', query);
-
-  const [copiedLinks, setCopiedLinks] = useState<Record<string, boolean>>({});
-
-  const copyToClipboard = async (slug: string) => {
-    const linkUrl = `${window.location.origin}/l/${slug}`;
-    await navigator.clipboard.writeText(linkUrl);
-    setCopiedLinks({ ...copiedLinks, [slug]: true });
-    setTimeout(() => {
-      setCopiedLinks({ ...copiedLinks, [slug]: false });
-    }, 2000);
-  };
+  console.log('🚀 ~ LinkQueryList ~ query:', links);
 
   return (
     <>
