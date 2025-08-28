@@ -245,7 +245,7 @@ export function Chat({
                           'ml-auto rounded-lg px-3 py-2 text-sm background-oats'
                         )}
                       >
-                        <p className="whitespace-pre-wrap">{message.content}</p>
+                        <p className="whitespace-pre-wrap">{message.content as string}</p>
                       </div>
                       <Avatar className="h-8 w-8 flex-shrink-0">
                         <AvatarImage
