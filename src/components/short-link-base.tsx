@@ -5,17 +5,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { Copy, Check } from 'lucide-react';
+import { DancingEmojis } from './dancing-emojis';
+import { EditLinkModal } from './edit-link-modal';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
 interface ShortLinkData {
   slug: string;
   destination: string;
   description?: string;
   qr_code?: string;
+  _id: string;
 }
 
 interface ShortLinkBaseProps {
   link: ShortLinkData;
-  baseUrl?: string;
 }
 
 export function ShortLinkBase({ link }: ShortLinkBaseProps) {
@@ -29,6 +33,7 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+  const deleteLinkMutation = useMutation(api.links.deleteLink);
 
   return (
     <div className="relative w-full max-w-lg p-4 rounded-2xl bg-background-toast shadow-lg">
@@ -53,12 +58,12 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
               </div>
             </div>
           )}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between ">
             <Link
               href={`${base}/l/${link.slug}`}
               className="font-mono text-sm text-foreground-base flex-1 mr-2"
             >
-              {base}/l/{link.slug}
+              <DancingEmojis slug={link.slug} />
             </Link>
             <div className="flex gap-1">
               <Button
@@ -88,6 +93,16 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
               {link.description}
             </div>
           )}
+        </div>
+        <div className="flex space-x-4">
+          <EditLinkModal link={link} />
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => deleteLinkMutation({ linkId: link._id })}
+          >
+            delete
+          </Button>
         </div>
       </div>
     </div>
