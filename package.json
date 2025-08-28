@@ -11,6 +11,14 @@
   "dependencies": {
     "@clerk/nextjs": "^6.31.6",
     "@clerk/themes": "^2.4.15",
+<<<<<<< HEAD
+=======
+    "@hashbrownai/core": "^0.2.3",
+    "@hashbrownai/openai": "^0.2.3",
+    "@hashbrownai/react": "^0.2.3",
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+>>>>>>> be7a9e8 (feat: connect chat component to hashbrown)
     "@hashbrownai/core": "^0.2.3",
     "@hashbrownai/openai": "^0.2.3",
     "@hashbrownai/react": "^0.2.3",
