@@ -26,6 +26,7 @@ import { s } from '@hashbrownai/core';
 import MarkdownWrapper from './markdown-wrapper';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import QRCode from 'qrcode';
 
 interface Message {
   id: string;
@@ -92,6 +93,8 @@ export function Chat({
         }),
         handler: async (input) => {
           console.log('🚀 ~ Chat ~ input:', input);
+          const qrCode = await QRCode.toDataURL(input.url);
+          console.log(qrCode);
           const createdLink = await insertLinkMutation({
             destination: input.url,
             description: input.description || 'A short link',
