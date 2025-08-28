@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Send, User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useChat } from '@hashbrownai/react';
+import { useUser } from '@clerk/nextjs';
 
 interface Message {
   id: string;
@@ -31,6 +32,19 @@ interface ChatProps {
   initialMessages?: Message[];
 }
 
+const breakfastLoadingMessages = [
+  '🥓 The bacon is sizzling...',
+  '🥞 Flipping pancakes...',
+  '☕ Brewing the perfect cup...',
+  '🧈 Buttering the toast...',
+  '🥚 Scrambling some thoughts...',
+  '🥄 Whisking up a response...',
+  '🧇 The waffle iron is heating up...',
+  '🍯 Pouring the syrup...',
+  '🥚 Cracking eggs of wisdom...',
+  '🍞 Toasting the perfect reply...',
+];
+
 export function Chat({
   title = 'Chat',
   placeholder = 'Type your message...',
@@ -39,10 +53,18 @@ export function Chat({
   initialMessages = [],
 }: ChatProps) {
   const [userMessage, setUserMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
+  console.log('🚀 ~ Chat ~ user:', user);
+
+  const [loadingMessage, setLoadingMessage] = useState(
+    () =>
+      breakfastLoadingMessages[
+        Math.floor(Math.random() * breakfastLoadingMessages.length)
+      ]
+  );
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { messages, sendMessage } = useChat({
+  const { messages, sendMessage, isReceiving, isSending } = useChat({
     model: 'gpt-4',
     system: 'hashbrowns should be covered and smothered',
     messages: [
@@ -64,6 +86,13 @@ export function Chat({
 
   const handleSendMessage = async () => {
     if (userMessage.trim()) {
+      // Pick a new random loading message for this request
+      const newLoadingMessage =
+        breakfastLoadingMessages[
+          Math.floor(Math.random() * breakfastLoadingMessages.length)
+        ];
+      setLoadingMessage(newLoadingMessage);
+
       sendMessage({ role: 'user', content: userMessage });
       setUserMessage('');
     }
@@ -113,7 +142,7 @@ export function Chat({
                 >
                   {message.role === 'assistant' && (
                     <Avatar className="h-8 w-8 flex-shrink-0">
-                      <AvatarImage src="/bot-avatar.png" />
+                      <AvatarImage src={`/bot-avatar.png`} />
                       <AvatarFallback>
                         <Bot className="h-4 w-4" />
                       </AvatarFallback>
@@ -143,7 +172,7 @@ export function Chat({
 
                   {message.role === 'user' && (
                     <Avatar className="h-8 w-8 flex-shrink-0">
-                      <AvatarImage src="/user-avatar.png" />
+                      <AvatarImage src={user?.imageUrl || `/user-avatar.png`} />
                       <AvatarFallback>
                         <User className="h-4 w-4" />
                       </AvatarFallback>
@@ -153,7 +182,7 @@ export function Chat({
               ))
             )}
 
-            {isLoading && (
+            {isSending && (
               <div className="flex gap-3 max-w-[80%] mr-auto">
                 <Avatar className="h-8 w-8 flex-shrink-0">
                   <AvatarFallback>
@@ -162,6 +191,7 @@ export function Chat({
                 </Avatar>
                 <div className="background-oats rounded-lg px-3 py-2 text-sm">
                   <div className="flex gap-1">
+                    <span>{loadingMessage}</span>
                     <div className="w-2 h-2 background-muted-foreground/50 rounded-full animate-pulse"></div>
                     <div className="w-2 h-2 background-muted-foreground/50 rounded-full animate-pulse delay-75"></div>
                     <div className="w-2 h-2 background-muted-foreground/50 rounded-full animate-pulse delay-150"></div>
@@ -181,12 +211,12 @@ export function Chat({
             onChange={(e) => setUserMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={placeholder}
-            disabled={isLoading}
+            disabled={isReceiving || isSending}
             className="flex-1"
           />
           <Button
             onClick={handleSendMessage}
-            disabled={!userMessage.trim() || isLoading}
+            disabled={!userMessage.trim() || isReceiving || isSending}
             size="icon"
           >
             <Send className="h-4 w-4" />
