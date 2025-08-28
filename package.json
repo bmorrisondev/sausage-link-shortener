@@ -11,6 +11,9 @@
   "dependencies": {
     "@clerk/nextjs": "^6.31.6",
     "@clerk/themes": "^2.4.15",
+    "@hashbrownai/core": "^0.2.3",
+    "@hashbrownai/openai": "^0.2.3",
+    "@hashbrownai/react": "^0.2.3",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
