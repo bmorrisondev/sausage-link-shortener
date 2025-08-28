@@ -1,0 +1,36 @@
+name: Deploy Convex to Production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'convex/**'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  deploy-convex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.15.4
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Deploy to Convex Production
+        run: npx convex deploy --prod
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}

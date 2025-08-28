@@ -5,13 +5,25 @@ import { api } from '../../../../convex/_generated/api'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { DancingEmojis } from '../../../components/dancing-emojis'
+import { type GenericId as Id } from 'convex/values'
+
+interface Link {
+  _id: Id<"links">;
+  _creationTime: number;
+  description?: string | undefined;
+  qr_code?: string | undefined;
+  search_key?: string | undefined;
+  destination: string;
+  slug: string;
+  user_id: string;
+}
 
 function LinkPage() {
   const params = useParams()
   const slug = decodeURIComponent(params.slug as string)
   // const link = useQuery(api.links.getLink, { slug })
   const getLink = useMutation(api.links.getLinkAndHit)
-  const [link, setLink] = useState<any>(null)
+  const [link, setLink] = useState<Link | null>(null)
 
   useEffect(() => {
     async function init() {
@@ -32,14 +44,6 @@ function LinkPage() {
   //     return () => clearTimeout(redirectTimer)
   //   }
   // }, [link])
-
-  // if (!link) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-  //       <div className="text-2xl font-bold">Loading...</div>
-  //     </div>
-  //   )
-  // }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
