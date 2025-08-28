@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
-import { Copy, Check, ExternalLink, QrCode } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
 interface ShortLinkData {
   slug: string;
@@ -21,7 +21,6 @@ interface ShortLinkBaseProps {
 export function ShortLinkBase({ link }: ShortLinkBaseProps) {
   const base = process.env.NEXT_PUBLIC_REDIRECT_BASE_URL;
   const [copied, setCopied] = useState(false);
-  const [showQr, setShowQr] = useState(false);
 
   const shortUrl = `${base}/l/${link.slug}`;
 
@@ -42,15 +41,17 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
 
         <div className="space-y-3">
           {link.qr_code && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 border-foreground-dark border-1 p-0 m-auto"
-              onClick={() => setShowQr(!showQr)}
-              title="Show QR Code"
-            >
-              <QrCode className="h-6 w-6" />
-            </Button>
+            <div className="flex justify-center pt-3 border-t border-background-latte">
+              <div className="flex flex-col items-center gap-2">
+                <Image
+                  src={link.qr_code}
+                  alt="QR Code"
+                  width={120}
+                  height={120}
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
           )}
           <div className="flex items-center justify-between">
             <Link
@@ -85,29 +86,6 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
             <div className="text-sm text-foreground-light">
               <span className="font-medium">Description:</span>{' '}
               {link.description}
-            </div>
-          )}
-
-          {showQr && link.qr_code && (
-            <div className="flex justify-center pt-3 border-t border-background-latte">
-              <div className="flex flex-col items-center gap-2">
-                <Image
-                  src={link.qr_code}
-                  alt="QR Code"
-                  width={120}
-                  height={120}
-                  className="rounded-lg"
-                />
-                <Button variant="outline" size="sm" asChild className="text-xs">
-                  <Link
-                    href={link.destination}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visit <ExternalLink className="ml-1 h-3 w-3" />
-                  </Link>
-                </Button>
-              </div>
             </div>
           )}
         </div>
