@@ -8,33 +8,6 @@ import { SignedIn, SignedOut, UserButton, SignIn } from '@clerk/nextjs'
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navigation Bar */}
-      <header className="w-full py-4 bg-background-toast border-b border-background-latte sticky top-0 z-10 backdrop-blur-sm">
-        <div className="container px-4 md:px-6 mx-auto">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/sausage-logo.svg" alt="Sausage Link Shortener" width={40} height={40} />
-              <span className="font-bold text-xl">Sausage Link</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <SignedIn>
-                <div className="flex items-center gap-4">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href="/chat">Get Cooking</Link>
-                  </Button>
-                  <UserButton />
-                </div>
-              </SignedIn> 
-              <SignedOut>
-                <Button asChild variant="outline" size="sm" className="hidden sm:flex">
-                  <Link href="/chat">Sign In</Link>
-                </Button>
-              </SignedOut>
-            </div>
-          </div>
-        </div>
-      </header>
-      
       {/* Hero Section */}
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background-oats">
@@ -198,16 +171,11 @@ export default function Home() {
                 </p>
               </div>
               <div className="mx-auto max-w-sm space-y-4">
-                <SignedIn>
-                  <Button asChild size="lg" className="w-full">
-                    <Link href="/chat">
-                      Sizzle your shortlinks <Sparkles className="ml-2" />
-                    </Link>
-                  </Button>
-                </SignedIn>
-                <SignedOut>
-                  <SignIn />
-                </SignedOut>
+                <Button asChild size="lg" className="w-full">
+                  <Link href="/chat">
+                    Sizzle your shortlinks <Sparkles className="ml-2" />
+                  </Link>
+                </Button>
                 <p className="text-xs text-foreground-light">
                   No credit card required. Free forever.
                 </p>
