@@ -3,6 +3,17 @@ import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+export const getLinkById = query ({
+  args: { id: v.string() },
+  handler: async (ctx, { id }) => {
+    const userId = await getUserId(ctx)
+    const link = await ctx.db.query("links").filter((q) => q.and(q.eq(q.field("_id"), id), q.eq(q.field("user_id"), userId))).first()
+    if(!link) {
+      throw new Error("Link not found")
+    }
+    return link
+  }
+})
 
 export const getLink = query({
   args: { slug: v.string() },

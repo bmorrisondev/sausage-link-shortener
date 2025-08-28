@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { EditLinkModal } from '@/components/edit-link-modal'
 import LinkQueryList from '@/components/link-query-list'
+import ShortLink from '@/components/short-link'
 
 function DebugPage() {
   const base = process.env.NEXT_PUBLIC_REDIRECT_BASE_URL
@@ -77,6 +78,12 @@ function DebugPage() {
         <Button onClick={() => setSearchQuery(searchInput)}>Search</Button>
         <Button onClick={() => setSearchInput('')}>Clear</Button>
         {searchQuery && <LinkQueryList query={searchQuery} />}
+      </div>
+
+      <div>
+        <h2> dispaly links</h2>
+
+        <ShortLink id="j57czkf8gnjzr13kfjn32rrf317pgp5c" />
       </div>
     </div>
   )
