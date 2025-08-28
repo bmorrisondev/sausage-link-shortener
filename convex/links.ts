@@ -33,7 +33,8 @@ export const hitLinkInternal = internalMutation({
   },
 });
 
-async function getUserId(ctx: GenericQueryCtx<AnyDataModel>) {
+// TODO: type this
+async function getUserId(ctx: GenericQueryCtx<any>) {
   const identity = await ctx.auth.getUserIdentity();
   if (identity === null) {
     throw new Error("Not authenticated");
@@ -70,9 +71,10 @@ function getRandomBreakfastEmojis(length: number): string {
 
 export const insert = mutation({
   args: {
-    destination: v.string()
+    destination: v.string(),
+    description: v.optional(v.string()),
   },
-  handler: async (ctx, { destination }) => {
+  handler: async (ctx, { destination, description }) => {
     try {
       new URL(destination);
     } catch {
@@ -98,7 +100,9 @@ export const insert = mutation({
     return await ctx.db.insert("links", {
       user_id: userId,
       destination,
-      slug
+      description,
+      slug,
+      search_key: `${slug} ${destination} ${description}`
     })
   },
 })
@@ -125,9 +129,17 @@ export const updateLink = mutation({
     description: v.optional(v.string())
   },
   handler: async (ctx, { linkId, destination, description }) => {
+    const userId = await getUserId(ctx)
+    const link = await ctx.db
+      .query("links")
+      .filter((q) => q.and(q.eq(q.field("_id"), linkId), q.eq(q.field("user_id"), userId))).first()
+    if(!link) {
+      throw new Error("Link not found")
+    }
     await ctx.db.patch(linkId, {
-      destination,
-      description
+      destination: destination || link.destination,
+      description: description || link.description,
+      search_key: `${link.slug} ${destination || link.destination} ${description || link.description}`
     })
   }
 })
@@ -157,12 +169,13 @@ export const getLinkStats = query({
       throw new Error("Link not found")
     }
 
-    const query = ctx.db.query("link_hits").filter((q) => q.eq(q.field("link_id"), linkId)).filter((q) => q.eq(q.field("user_id"), userId))
+    // TODO: I think I need to set query again but not 100% sure
+    const query = ctx.db.query("link_hits").filter((q) => q.eq(q.field("link_id"), linkId))
     if(start) {
-      query.filter((q) => q.gte(q.field("created_at"), start))
+      query.filter((q) => q.gte(q.field("_creationTime"), start))
     }
     if(end) {
-      query.filter((q) => q.lte(q.field("created_at"), end))
+      query.filter((q) => q.lte(q.field("_creationTime"), end))
     }
     // TODO: Maybe add limit and offset
     // if(limit) {
@@ -224,4 +237,20 @@ export const getLinkStats = query({
       aggregated: result
     }
   }
+})
+
+export const searchLinks = query({
+  args: {
+    query: v.string(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, { query, limit }) => {
+    if(!limit) limit = 10 
+    const userId = await getUserId(ctx)
+    return await ctx.db
+      .query("links")
+      .withSearchIndex("search_key", (q) => 
+        q.search("search_key", query).eq("user_id", userId))
+      .take(limit);
+  },
 })
