@@ -29,7 +29,8 @@ function DebugPage() {
             {userLinks?.map((link) => (
               <li key={link._id} className="flex items-center p-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded">
                 <Link 
-                  href={`https://ssgl.ink/l/${link.slug}`}
+                  // href={`https://ssgl.ink/l/${link.slug}`}
+                  href={`http://localhost:3000/l/${link.slug}`}
                   className="font-mono text-sm bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded hover:underline text-blue-600 dark:text-blue-400"
                 >
                   {link.slug}

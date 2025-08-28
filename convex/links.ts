@@ -2,6 +2,13 @@ import { AnyDataModel, GenericMutationCtx, GenericQueryCtx } from "convex/server
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+export const getLink = query({
+  args: { slug: v.string() },
+  handler: async (ctx, { slug }) => {
+    return await ctx.db.query("links").filter((q) => q.eq(q.field("slug"), slug)).first()
+  }
+})
+
 async function getUserId(ctx: GenericQueryCtx<AnyDataModel>) {
   const identity = await ctx.auth.getUserIdentity();
   if (identity === null) {
