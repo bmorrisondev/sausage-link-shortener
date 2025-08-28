@@ -14,8 +14,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Send, User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useChat } from '@hashbrownai/react';
+import { exposeComponent, useChat, useUiChat } from '@hashbrownai/react';
 import { useUser } from '@clerk/nextjs';
+import ShortLink from './short-link';
+import { s } from '@hashbrownai/core';
+import MarkdownWrapper from './markdown-wrapper';
 
 interface Message {
   id: string;
@@ -64,11 +67,27 @@ export function Chat({
   );
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { messages, sendMessage, isReceiving, isSending } = useChat({
-    model: 'gpt-4',
+  const { messages, sendMessage, isReceiving, isSending } = useUiChat({
+    model: 'gpt-4.1',
     system: 'hashbrowns should be covered and smothered',
     messages: [
       { role: 'user', content: 'Write a short story about breakfast.' },
+    ],
+    components: [
+      exposeComponent(ShortLink, {
+        name: 'ShortLink',
+        description: 'Display a short link based on its url.',
+        props: {
+          url: s.string('The URL to display'),
+        },
+      }),
+      exposeComponent(MarkdownWrapper, {
+        name: 'MarkdownWrapper',
+        description: 'Show markdown to the user',
+        props: {
+          content: s.streaming.string('The markdown content'),
+        },
+      }),
     ],
   });
 
@@ -141,24 +160,20 @@ export function Chat({
                   )}
                 >
                   {message.role === 'assistant' && (
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                      <AvatarImage src={`/bot-avatar.png`} />
-                      <AvatarFallback>
-                        <Bot className="h-4 w-4" />
-                      </AvatarFallback>
-                    </Avatar>
-                  )}
-
-                  <div
-                    className={cn(
-                      'rounded-lg px-3 py-2 text-sm',
-                      message.role === 'user'
-                        ? 'background-latte text-foreground-base ml-auto'
-                        : 'background-oats'
-                    )}
-                  >
-                    <p className="whitespace-pre-wrap">{message.content}</p>
-                    {/* <span
+                    <>
+                      <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage src={`/bot-avatar.png`} />
+                        <AvatarFallback>
+                          <Bot className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div
+                        className={cn(
+                          'rounded-lg px-3 py-2 text-sm background-oats'
+                        )}
+                      >
+                        <p className="whitespace-pre-wrap">{message.ui}</p>
+                        {/* <span
                       className={cn(
                         'text-xs opacity-70 mt-1 block',
                         message.role === 'user'
@@ -168,15 +183,28 @@ export function Chat({
                     >
                       {formatTime(message.timestamp)}
                     </span> */}
-                  </div>
+                      </div>
+                    </>
+                  )}
 
                   {message.role === 'user' && (
-                    <Avatar className="h-8 w-8 flex-shrink-0">
-                      <AvatarImage src={user?.imageUrl || `/user-avatar.png`} />
-                      <AvatarFallback>
-                        <User className="h-4 w-4" />
-                      </AvatarFallback>
-                    </Avatar>
+                    <>
+                      <div
+                        className={cn(
+                          'rounded-lg px-3 py-2 text-sm background-oats'
+                        )}
+                      >
+                        <p className="whitespace-pre-wrap">{message.content}</p>
+                      </div>
+                      <Avatar className="h-8 w-8 flex-shrink-0">
+                        <AvatarImage
+                          src={user?.imageUrl || `/user-avatar.png`}
+                        />
+                        <AvatarFallback>
+                          <User className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
+                    </>
                   )}
                 </div>
               ))

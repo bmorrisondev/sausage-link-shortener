@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server';
 import { HashbrownOpenAI } from '@hashbrownai/openai';
-import { Chat } from '@hashbrownai/core'
+import { Chat } from '@hashbrownai/core';
 
 export const runtime = 'nodejs'; // ensure Node runtime (not edge)
 
 export async function POST(req: NextRequest) {
-  const body: Chat.Api.CompletionCreateParams = await req.json()
+  const body: Chat.Api.CompletionCreateParams = await req.json();
 
   const stream = HashbrownOpenAI.stream.text({
     apiKey: process.env.OPENAI_API_KEY!,
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   // Transform the stream into a Web standard ReadableStream
   const transformStream = new TransformStream();
   const writer = transformStream.writable.getWriter();
-  
+
   // Process the stream in the background
   (async () => {
     try {
