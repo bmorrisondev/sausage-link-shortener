@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Copy, Check } from 'lucide-react';
+import ShortLinkBase from './short-link-base';
 
 interface Props {
   query: string;
@@ -26,49 +27,20 @@ function LinkQueryList({ query }: Props) {
   };
 
   return (
-    <Card className="w-full shadow-md">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold">
-          Search Results: {query}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {links?.length === 0 ? (
-          <p className="text-muted-foreground text-center py-4">
-            No links found
-          </p>
-        ) : (
-          <div className="space-y-2">
-            {links?.map((link) => (
-              <div
-                key={link._id}
-                className="flex items-center justify-between p-3 rounded-md border border-border hover:bg-muted/50 transition-colors"
-              >
-                <Link
-                  href={`/l/${link.slug}`}
-                  className="text-primary hover:underline"
-                >
-                  {link.slug}
-                </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => copyToClipboard(link.slug)}
-                  className="h-8 w-8 p-0"
-                  title="Copy link"
-                >
-                  {copiedLinks[link.slug] ? (
-                    <Check className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+    <>
+      <h2 className="text-xl font-bold">Search Results: {query}</h2>
+      {links?.length === 0 ? (
+        <p className="text-muted-foreground text-center py-4">No links found</p>
+      ) : (
+        <div className="space-y-2">
+          {links?.map((link) => (
+            <div key={link._id}>
+              <ShortLinkBase link={link} />
+            </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 

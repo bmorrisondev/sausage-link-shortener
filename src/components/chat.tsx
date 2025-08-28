@@ -14,20 +14,15 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Send, User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  exposeComponent,
-  useChat,
-  useTool,
-  useUiChat,
-} from '@hashbrownai/react';
+import { exposeComponent, useTool, useUiChat } from '@hashbrownai/react';
 import { useUser } from '@clerk/nextjs';
-import ShortLink from './short-link';
 import { s } from '@hashbrownai/core';
 import MarkdownWrapper from './markdown-wrapper';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import QRCode from 'qrcode';
 import LinkQueryList from './link-query-list';
+import ShortLinkQuery from './short-link';
 
 interface Message {
   id: string;
@@ -108,7 +103,7 @@ export function Chat({
       }),
     ],
     components: [
-      exposeComponent(ShortLink, {
+      exposeComponent(ShortLinkQuery, {
         name: 'ShortLink',
         description:
           'Display a short link including its url, description, and slug',
@@ -172,10 +167,7 @@ export function Chat({
 
   return (
     <Card
-      className={cn(
-        'w-full max-w-2xl mx-auto h-[600px] flex flex-col',
-        className
-      )}
+      className={cn('w-full max-w-2xl mx-auto h-fullflex flex-col', className)}
     >
       <CardHeader className="flex-shrink-0">
         <CardTitle className="flex items-center gap-2">
@@ -239,7 +231,7 @@ export function Chat({
                     <>
                       <div
                         className={cn(
-                          'rounded-lg px-3 py-2 text-sm background-oats'
+                          'rounded-lg px-3 py-2 text-sm background-oats ml-auto'
                         )}
                       >
                         <p className="whitespace-pre-wrap">{message.content}</p>
