@@ -92,16 +92,12 @@ export function Chat({
         }),
         handler: async (input) => {
           console.log('🚀 ~ Chat ~ input:', input);
-          //   await insertLinkMutation({
-          //     destination: input.url,
-          //     description: input.description || 'A short link',
-          //   });
-
-          return {
-            url: input.url,
+          const createdLink = await insertLinkMutation({
+            destination: input.url,
             description: input.description || 'A short link',
-            slug: 'abcd1234',
-          };
+          });
+          console.log(createdLink);
+          return createdLink;
         },
         deps: [],
       }),
