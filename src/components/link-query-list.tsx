@@ -13,7 +13,6 @@ interface Props {
 
 function LinkQueryList({ query }: Props) {
   const links = useQuery(api.links.searchLinks, { query });
-  console.log('🚀 ~ LinkQueryList ~ query:', links);
 
   return (
     <>
