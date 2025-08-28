@@ -27,6 +27,7 @@ import MarkdownWrapper from './markdown-wrapper';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import QRCode from 'qrcode';
+import LinkQueryList from './link-query-list';
 
 interface Message {
   id: string;
@@ -120,6 +121,13 @@ export function Chat({
         description: 'Show markdown to the user',
         props: {
           content: s.streaming.string('The markdown content'),
+        },
+      }),
+      exposeComponent(LinkQueryList, {
+        name: 'LinkQueryList',
+        description: 'Show a list of links matching a query',
+        props: {
+          query: s.string('The search term to filter links by'),
         },
       }),
     ],
