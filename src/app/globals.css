@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -37,6 +37,15 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-background-oats: var(--background-oats);
+  --color-background-toast: var(--background-toast);
+  --color-background-latte: var(--background-latte);
+  --color-foreground-dark: var(--foreground-dark);
+  --color-foreground-base: var(--foreground-base);
+  --color-foreground-light: var(--foreground-light);
+  --color-accent-strawberry: var(--accent-strawberry);
+  --color-accent-yolk: var(--accent-yolk);
+  --color-accent-avocado: var(--accent-avocado);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -76,6 +85,17 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Custom color palette */
+  --background-oats: #fff8e7;
+  --background-toast: #f3e1c0;
+  --background-latte: #d7b89c;
+  --foreground-dark: #2a2323;
+  --foreground-base: #3b2f2f;
+  --foreground-light: #8b7e7e;
+  --accent-strawberry: #e63946;
+  --accent-yolk: #ffb703;
+  --accent-avocado: #7cb518;
 }
 
 .dark {
@@ -110,6 +130,17 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Custom color palette - same values for dark mode */
+  --background-oats: #fff8e7;
+  --background-toast: #f3e1c0;
+  --background-latte: #d7b89c;
+  --foreground-dark: #2a2323;
+  --foreground-base: #3b2f2f;
+  --foreground-light: #8b7e7e;
+  --accent-strawberry: #e63946;
+  --accent-yolk: #ffb703;
+  --accent-avocado: #7cb518;
 }
 
 @layer base {
@@ -117,8 +148,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background-oats text-foreground-dark;
   }
 }
 
-@import "@clerk/themes/shadcn.css"
+@import '@clerk/themes/shadcn.css';
