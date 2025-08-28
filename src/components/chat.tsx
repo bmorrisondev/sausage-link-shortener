@@ -59,6 +59,8 @@ export function Chat({
   onSendMessage,
   initialMessages = [],
 }: ChatProps) {
+  const base = process.env.NEXT_PUBLIC_REDIRECT_BASE_URL;
+
   const [userMessage, setUserMessage] = useState('');
   const { user } = useUser();
 
@@ -71,6 +73,7 @@ export function Chat({
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const insertLinkMutation = useMutation(api.links.insert);
+  const updateLinkMutation = useMutation(api.links.updateLink);
 
   const { messages, sendMessage, isReceiving, isSending } = useUiChat({
     debugName: 'Chat Component',
@@ -88,12 +91,17 @@ export function Chat({
           description: s.string('Description of the link'),
         }),
         handler: async (input) => {
-          console.log('🚀 ~ Chat ~ input:', input);
-          const qrCode = await QRCode.toDataURL(input.url);
-          console.log(qrCode);
           const createdLink = await insertLinkMutation({
             destination: input.url,
             description: input.description || 'A short link',
+          });
+
+          const href = `${base}/l/${createdLink.slug}`;
+          const qrCode = await QRCode.toDataURL(href);
+          console.log(qrCode);
+
+          await updateLinkMutation({
+            linkId: createdLink.id,
             qr_code: qrCode,
           });
           console.log(createdLink);
@@ -168,7 +176,7 @@ export function Chat({
   return (
     <Card
       className={cn(
-        'w-full max-w-2xl mx-auto h-[600px] flex flex-col',
+        'w-full max-w-4xl mx-auto h-[80vh] flex flex-col',
         className
       )}
     >
@@ -234,7 +242,7 @@ export function Chat({
                     <>
                       <div
                         className={cn(
-                          'rounded-lg px-3 py-2 text-sm background-oats'
+                          'ml-auto rounded-lg px-3 py-2 text-sm background-oats'
                         )}
                       >
                         <p className="whitespace-pre-wrap">{message.content}</p>
