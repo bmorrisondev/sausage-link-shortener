@@ -10,6 +10,7 @@ import { EditLinkModal } from './edit-link-modal';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import BaconDivider from './bacon-divider';
+import { GenericId as Id } from 'convex/values';
 
 interface ShortLinkData {
   slug: string;
@@ -96,11 +97,11 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
           )}
         </div>
         <div className="flex space-x-4">
-          <EditLinkModal link={link} />
+          <EditLinkModal _id={link._id as Id<'links'>} slug={link.slug} destination={link.destination} description={link.description} />
           <Button
             variant="destructive"
             size="sm"
-            onClick={() => deleteLinkMutation({ linkId: link._id })}
+            onClick={() => deleteLinkMutation({ linkId: link._id as Id<'links'> })}
           >
             delete
           </Button>

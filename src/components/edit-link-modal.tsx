@@ -15,18 +15,16 @@ import {
 } from '@/components/ui/dialog';
 
 interface Props {
-  link: {
-    _id: Id<'links'>;
-    slug: string;
-    destination: string;
-    description?: string;
-  };
+  _id: Id<'links'>;
+  slug: string;
+  destination: string;
+  description?: string;
 }
 
-export function EditLinkModal({ link }: Props) {
-  const [editDestination, setEditDestination] = useState(link.destination);
+export function EditLinkModal({ _id, slug, destination, description }: Props) {
+  const [editDestination, setEditDestination] = useState(destination);
   const [editDescription, setEditDescription] = useState(
-    link.description || ''
+    description || ''
   );
   const updateLinkMutation = useMutation(api.links.updateLink);
 
@@ -41,8 +39,8 @@ export function EditLinkModal({ link }: Props) {
   return (
     <Dialog
       onOpenChange={() => {
-        setEditDestination(link.destination);
-        setEditDescription(link.description || '');
+        setEditDestination(destination);
+        setEditDescription(description || '');
       }}
     >
       <DialogTrigger asChild>
@@ -52,7 +50,7 @@ export function EditLinkModal({ link }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit {link.slug}</DialogTitle>
+          <DialogTitle>Edit {slug}</DialogTitle>
         </DialogHeader>
 
         <form className="space-y-4 py-4">
@@ -62,7 +60,7 @@ export function EditLinkModal({ link }: Props) {
             </label>
             <Input
               id="destination"
-              defaultValue={link.destination}
+              defaultValue={destination}
               onChange={(e) => setEditDestination(e.target.value)}
             />
           </div>
@@ -72,7 +70,7 @@ export function EditLinkModal({ link }: Props) {
             </label>
             <Input
               id="description"
-              defaultValue={link.description || ''}
+              defaultValue={description || ''}
               onChange={(e) => setEditDescription(e.target.value)}
             />
           </div>
@@ -81,7 +79,7 @@ export function EditLinkModal({ link }: Props) {
         <DialogFooter>
           <DialogClose>Cancel</DialogClose>
           <DialogClose asChild>
-            <Button onClick={() => handleUpdateLink(link._id)}>Save</Button>
+            <Button onClick={() => handleUpdateLink(_id)}>Save</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

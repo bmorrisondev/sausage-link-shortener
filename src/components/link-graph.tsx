@@ -24,7 +24,7 @@ interface ChartData {
 function LinkGraph({ id }: Props) {
   console.log(id);
   const stats = useQuery(api.links.getLinkStats, {
-    linkId: id,
+    linkId: id as Id<'links'>,
     aggregateBy: 'day',
   });
 

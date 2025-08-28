@@ -73,7 +73,7 @@ function DebugPage() {
                 >
                   delete
                 </button>
-                <EditLinkModal link={link} />
+                <EditLinkModal _id={link._id as Id<'links'>} slug={link.slug} destination={link.destination} description={link.description} />
               </li>
             ))}
           </ul>
