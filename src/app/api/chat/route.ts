@@ -1,14 +1,25 @@
 import { NextRequest } from 'next/server';
 import { HashbrownOpenAI } from '@hashbrownai/openai';
 import { Chat } from '@hashbrownai/core';
-
+import { auth } from '@clerk/nextjs/server'
+import { clerkClient } from '@clerk/nextjs/server'
 export const runtime = 'nodejs'; // ensure Node runtime (not edge)
 
 export async function POST(req: NextRequest) {
+  const { userId } = await auth()
+  const user = await (await clerkClient()).users.getUser(userId)
+  const apiKey = user.privateMetadata?.openai_api_key
+
+  if(!apiKey) {
+    return new Response('No API key found', {
+      status: 401,
+    })
+  }
+
   const body: Chat.Api.CompletionCreateParams = await req.json();
 
   const stream = HashbrownOpenAI.stream.text({
-    apiKey: process.env.OPENAI_API_KEY!,
+    apiKey: apiKey as string,
     request: body,
   });
 
