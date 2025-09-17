@@ -26,7 +26,8 @@ export default function Home() {
                   Every short link comes with 12 breakfast-themed emojis instead of boring IDs.
                   Free to use, easy to share, and absolutely delightful!
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+
+                <div className="flex gap-3 justify-center lg:justify-start">
                   <SignedIn>
                     <Link 
                       href="/chat" 
@@ -44,6 +45,7 @@ export default function Home() {
                     </Link>
                   </SignedOut>
                 </div>
+
               </div>
               <div className="flex items-center justify-center">
                 <div className="relative w-full max-w-md p-4 rounded-2xl bg-background-toast shadow-lg">

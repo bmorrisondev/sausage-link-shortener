@@ -71,7 +71,7 @@ function DebugPage() {
                 <button
                   onClick={() => deleteLinkMutation({ linkId: link._id })}
                 >
-                  delete
+                  Delete
                 </button>
                 <EditLinkModal _id={link._id as Id<'links'>} slug={link.slug} destination={link.destination} description={link.description} />
               </li>

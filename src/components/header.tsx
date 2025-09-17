@@ -21,14 +21,14 @@ export function Header() {
             <div className="flex items-center gap-4">
               <SignedIn>
                 <div className="flex items-center gap-4">
-                  <Button asChild variant="outline" size="sm">
+                  <Button asChild size="sm">
                     <Link href="/chat">Get Cooking</Link>
                   </Button>
                   <UserButton />
                 </div>
               </SignedIn> 
               <SignedOut>
-                <Button asChild variant="outline" size="sm" className="hidden sm:flex">
+                <Button asChild size="sm">
                   <Link href="/chat">Sign In</Link>
                 </Button>
               </SignedOut>

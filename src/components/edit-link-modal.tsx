@@ -44,7 +44,7 @@ export function EditLinkModal({ _id, slug, destination, description }: Props) {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" className='bg-white' size="sm">
           Edit
         </Button>
       </DialogTrigger>

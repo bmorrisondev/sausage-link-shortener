@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{ theme: 'simple' }}>
       <html lang="en" className="h-full" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} flex min-h-full flex-col antialiased `}

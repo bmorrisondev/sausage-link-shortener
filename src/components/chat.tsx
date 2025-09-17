@@ -83,7 +83,7 @@ export function Chat({
     debugName: 'Chat Component',
     model: 'gpt-4.1',
     system:
-      'You are a helpful assistant that helps users create short links. When a user provides a URL, create a short link for it using the create_short_link tool. You can also show existing links, and statistics about links. Always respond in markdown format. Use bacon dividers to separate different sections of your response. If a user asks for statistics about a link, show a graph of link clicks over time.',
+      'You are a helpful assistant that helps users create short links. When a user provides a URL, create a short link for it using the create_short_link tool. You can also show existing links, and statistics about links. Always respond in markdown format. If a user asks for statistics about a link, show a graph of link clicks over time.',
     messages: [
       { role: 'user', content: 'Write a short story about breakfast.' },
     ],
@@ -185,7 +185,7 @@ export function Chat({
   return (
     <Card
       className={cn(
-        'w-full max-w-4xl mx-auto h-[80vh] flex flex-col',
+        'w-full max-w-4xl mx-auto h-[80vh] flex flex-col bg-white',
         className
       )}
     >
@@ -254,11 +254,11 @@ export function Chat({
                           'ml-auto rounded-lg px-3 py-2 text-sm background-oats'
                         )}
                       >
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap bg-background-toast px-4 py-2 rounded-lg">
                           {message.content as string}
                         </p>
                       </div>
-                      <Avatar className="h-8 w-8 flex-shrink-0">
+                      <Avatar className="h-8 w-8 flex-shrink-0 mt-2">
                         <AvatarImage
                           src={user?.imageUrl || `/user-avatar.png`}
                         />

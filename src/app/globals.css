@@ -129,4 +129,16 @@
   }
 }
 
+/* .cl-userButtonPopoverFooter, .cl-footer {
+  @apply bg-white;
+}
+
+.cl-formFieldInput {
+  @apply bg-background-oats;
+} */
+
+/* .bg-transparent {
+  @apply bg-white border-lime-100;
+} */
+
 @import '@clerk/themes/shadcn.css';

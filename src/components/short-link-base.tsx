@@ -103,7 +103,7 @@ export function ShortLinkBase({ link }: ShortLinkBaseProps) {
             size="sm"
             onClick={() => deleteLinkMutation({ linkId: link._id as Id<'links'> })}
           >
-            delete
+            Delete
           </Button>
         </div>
       </div>
