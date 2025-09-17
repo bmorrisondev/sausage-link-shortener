@@ -77,7 +77,7 @@ function ApiKeyForm() {
 
 function ChatPage() {
   const { isLoaded } = useAuth()
-  const [hasKey, setHasKey] = useState(false)
+  const [hasKey, setHasKey] = useState<boolean | null>(null)
 
   useEffect(() => {
     async function init() {
@@ -87,7 +87,7 @@ function ChatPage() {
     init()
   }, [])
 
-  if (!isLoaded) {
+  if (!isLoaded || hasKey === null) {
     return <div>Loading...</div>
   }
 

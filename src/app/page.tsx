@@ -169,17 +169,6 @@ export default function Home() {
                 © 2025 Sausage Link Shortener. All rights reserved.
               </p>
             </div>
-            <div className="flex gap-4">
-              <Link href="/" className="text-sm text-foreground-dark hover:underline">
-                Terms
-              </Link>
-              <Link href="/" className="text-sm text-foreground-dark hover:underline">
-                Privacy
-              </Link>
-              <Link href="/" className="text-sm text-foreground-dark hover:underline">
-                Contact
-              </Link>
-            </div>
           </div>
         </div>
       </footer>
