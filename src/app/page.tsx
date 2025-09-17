@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Coffee, Sparkles, Link as LinkIcon, QrCode, ChartBar, Copy, Egg } from 'lucide-react';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { FeatureCard } from '@/components/feature-card'
 
 export default function Home() {
   return (
@@ -85,90 +85,48 @@ export default function Home() {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <Egg className="h-10 w-10 text-accent-yolk mb-2" />
-                  <CardTitle>Emoji Slugs</CardTitle>
-                  <CardDescription>
-                    Every link gets a unique 12-emoji combination that&apos;s fun and memorable
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    Say goodbye to boring alphanumeric codes and hello to breakfast emojis that bring a smile
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <Coffee className="h-10 w-10 text-accent-strawberry mb-2" />
-                  <CardTitle>Chat Interface</CardTitle>
-                  <CardDescription>
-                    Simply paste your link and get a shortened version through our friendly chat interface
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    No complicated forms or settings - just chat naturally to create and manage your links
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <Coffee className="h-10 w-10 text-background-latte mb-2" />
-                  <CardTitle>100% Free</CardTitle>
-                  <CardDescription>
-                    Create as many links as you need without any cost or hidden fees
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    Enjoy unlimited link creation and sharing without spending a dime
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <QrCode className="h-10 w-10 text-foreground-dark mb-2" />
-                  <CardTitle>QR Codes</CardTitle>
-                  <CardDescription>
-                    Every shortened link comes with a downloadable QR code
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    Perfect for print materials, business cards, or sharing in the physical world
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <LinkIcon className="h-10 w-10 text-accent-avocado mb-2" />
-                  <CardTitle>Link Management</CardTitle>
-                  <CardDescription>
-                    Easily manage all your shortened links in one place
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    View, organize, and track all your links from a simple dashboard
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="bg-background-oats">
-                <CardHeader className="flex flex-col items-center">
-                  <ChartBar className="h-10 w-10 text-accent-yolk mb-2" />
-                  <CardTitle>Click Analytics</CardTitle>
-                  <CardDescription>
-                    Track how many times your links have been clicked
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground-light">
-                    Get insights into link performance with simple analytics
-                  </p>
-                </CardContent>
-              </Card>
+              <FeatureCard 
+                icon={Egg}
+                iconColor="text-accent-yolk"
+                title="Emoji Slugs"
+                description="Every link gets a unique 12-emoji combination that's fun and memorable"
+                content="Say goodbye to boring alphanumeric codes and hello to breakfast emojis that bring a smile"
+              />
+              <FeatureCard 
+                icon={Coffee}
+                iconColor="text-accent-strawberry"
+                title="Chat Interface"
+                description="Simply paste your link and get a shortened version through our friendly chat interface"
+                content="No complicated forms or settings - just chat naturally to create and manage your links"
+              />
+              <FeatureCard 
+                icon={Coffee}
+                iconColor="text-background-latte"
+                title="100% Free"
+                description="Create as many links as you need without any cost or hidden fees"
+                content="Enjoy unlimited link creation and sharing without spending a dime"
+              />
+              <FeatureCard 
+                icon={QrCode}
+                iconColor="text-foreground-dark"
+                title="QR Codes"
+                description="Every shortened link comes with a downloadable QR code"
+                content="Perfect for print materials, business cards, or sharing in the physical world"
+              />
+              <FeatureCard 
+                icon={LinkIcon}
+                iconColor="text-accent-avocado"
+                title="Link Management"
+                description="Easily manage all your shortened links in one place"
+                content="View, organize, and track all your links from a simple dashboard"
+              />
+              <FeatureCard 
+                icon={ChartBar}
+                iconColor="text-accent-yolk"
+                title="Click Analytics"
+                description="Track how many times your links have been clicked"
+                content="Get insights into link performance with simple analytics"
+              />
             </div>
           </div>
         </section>
